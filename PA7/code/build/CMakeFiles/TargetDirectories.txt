@@ -1,0 +1,3 @@
+/Users/renboyu/101.GAMES101/PA7/code/build/CMakeFiles/RayTracing.dir
+/Users/renboyu/101.GAMES101/PA7/code/build/CMakeFiles/edit_cache.dir
+/Users/renboyu/101.GAMES101/PA7/code/build/CMakeFiles/rebuild_cache.dir

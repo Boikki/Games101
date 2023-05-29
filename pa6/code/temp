@@ -1,0 +1,67 @@
+
+        for (int i = 0; i < 3; i++) {
+            switch (i) {
+            case 0:
+                std::sort(objects.begin(), objects.end(), [](auto f1, auto f2) {
+                    return f1->getBounds().Centroid().x <
+                           f2->getBounds().Centroid().x;
+                });
+                break;
+            case 1:
+                std::sort(objects.begin(), objects.end(), [](auto f1, auto f2) {
+                    return f1->getBounds().Centroid().y <
+                           f2->getBounds().Centroid().y;
+                });
+                break;
+            case 2:
+                std::sort(objects.begin(), objects.end(), [](auto f1, auto f2) {
+                    return f1->getBounds().Centroid().z <
+                           f2->getBounds().Centroid().z;
+                });
+                break;
+            }
+            for (int j = 1; j < B; j++) {
+                auto beginning = objects.begin();
+                auto middling = objects.begin() + (objects.size() / 2);
+                auto ending = objects.end();
+                // 二分Mesh Tri 数组
+                auto leftshapes = std::vector<Object*>(beginning, middling);
+                auto rightshapes = std::vector<Object*>(middling, ending);
+                // 求左右Box面积
+                Bounds3 leftBounds, rightBounds;
+                for (int k = 0; k < leftshapes.size(); k++)  {
+                    leftBounds = Union(leftBounds, leftshapes[k]->getBounds().Centroid());
+                }
+                for (int k = 0; k < rightshapes.size(); k++)  {
+                    rightBounds = Union(rightBounds, rightshapes[k]->getBounds().Centroid());
+                }
+                float SA = leftBounds.SurfaceArea();
+                float SB = rightBounds.SurfaceArea();
+                float cost = 1 + (leftshapes.size() * SA + rightshapes.size() * SB) / Sn;
+                if (cost < minCost) {
+                    minCost = cost;
+                    minCostInd = j;
+                    minCostCoor = i;
+                }
+            }
+        }
+        switch (minCostCoor) {
+        case 0:
+            std::sort(objects.begin(), objects.end(), [](auto f1, auto f2) {
+                return f1->getBounds().Centroid().x <
+                       f2->getBounds().Centroid().x;
+            });
+            break;
+        case 1:
+            std::sort(objects.begin(), objects.end(), [](auto f1, auto f2) {
+                return f1->getBounds().Centroid().y <
+                       f2->getBounds().Centroid().y;
+            });
+            break;
+        case 2:
+            std::sort(objects.begin(), objects.end(), [](auto f1, auto f2) {
+                return f1->getBounds().Centroid().z <
+                       f2->getBounds().Centroid().z;
+            });
+            break;
+        }
